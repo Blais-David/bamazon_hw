@@ -1,0 +1,20 @@
+{
+    "development": {
+      "username": "root",
+      "password": "P4o1l2k8m8",
+      "database": "bamazon",
+      "host": "localhost",
+      "port": 3306,
+      "dialect": "mysql"
+    },
+    "test": {
+      "username": "root",
+      "password": null,
+      "database": "bamazon",
+      "host": "127.0.0.1",
+      "dialect": "mysql"
+    },
+    "production": {
+      "use_env_variable": "JAWSDB_URL"
+  }
+}
