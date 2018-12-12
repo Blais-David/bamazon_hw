@@ -1,5 +1,5 @@
 {
-  "name": "bamazon",
+  "name": "bamazon_hw",
   "version": "1.0.0",
   "description": "E-commerce style project using SQL and sequelize",
   "main": "server.js",
