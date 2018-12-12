@@ -1,9 +1,25 @@
-module.exports = function(sequelize, DataTypes) {
-    const Product = sequelize.define('product', {
-        product_name: DataTypes.STRING,
-        department_name: DataTypes.STRING,
-        price: DataTypes.DECIMAL(10, 2),
-        stock_quantity: DataTypes.INTEGER
+module.exports = function(connection, Sequelize) {
+    const Product = connection.define('Product', {
+      product_name:{
+          type: Sequelize.STRING,
+          allowNull: false
+      },
+      
+      department_name: {
+          type: Sequelize.STRING,
+          allowNull: false
+      },
+
+      price: {
+          type: Sequelize.FLOAT,
+          allowNull: false
+      },
+
+      stock_quantity: {
+        type: Sequelize.INTEGER,
+        allowNull: true
+    },
+      
     });
     return Product;
-}
+  };

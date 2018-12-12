@@ -1,19 +1,30 @@
 {
   "name": "bamazon",
   "version": "1.0.0",
-  "description": "",
+  "description": "E-commerce style project using SQL and sequelize",
   "main": "server.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js",
-    "seed": "node ./seeds/seed-db.js"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "express": "^4.16.4",
-    "mysql2": "^1.6.4",
-    "sequelize": "^4.41.1"
-  }
+    "mysql2": "^1.6.3",
+    "sequelize": "^4.41.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./seeds/seed-db.js && node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Blais-David/bamazon_hw.git"
+  },
+  "keywords": [
+    "SQL",
+    "seuqelize"
+  ],
+  "author": "David Blais",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Blais-David/bamazon_hw/issues"
+  },
+  "homepage": "https://github.com/Blais_David/bamazon_hw#readme"
 }

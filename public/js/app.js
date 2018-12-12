@@ -1,20 +1,24 @@
-$(function() {
+$(function () {
+
+
+    let cartTotal = 0;
+    let cartItems = [];
 
     let timerInterval;
 
     const render = function (items) {
-        $('model').model('hide');
+        $('modal').modal('hide');
         $('#sale-items').empty();
 
-        items.forEach(function(item) {
-            $('#sale-items').apppend(buildItemRow(item));
+        items.forEach(function (item) {
+            $('#sale-items').append(buildItemRow(item));
         });
-    }
+    };
 
     const getItems = function () {
         $.get('/api/products').then(render);
-    }
 
+    };
     const buildItemRow = function (item) {
         const tr = $('<tr>');
 
@@ -23,78 +27,122 @@ $(function() {
             min: 0,
             id: item.id
         });
-
         const button = $('<button>')
-        .addClass('btn btn-warning add-to-cart')
-        .text('Add To Cart')
-        .attr('data-id', item.id);
+            .addClass('btn btn-warning add-to-cart')
+            .text('Add to Cart')
+            .attr('data-id', item.id);
 
         tr.append(
             $('<td>').append(input),
             $('<td>').text(item.product_name),
             $('<td>').text(item.stock_quantity),
-            $('<td>').text(`${item.price}`),
+            $('<td>').text(`$${item.price}`),
             $('<td>').append(button)
         );
-
         return tr;
-    }
-
-    const addCartRow = function (quantity, item) {
-        const itemTotal = item.price * quantity;
+    };
+    const addCartRow = function (qty, item) {
+        const itemTotal = item.price * qty;
 
         cartTotal += itemTotal;
 
-        item.stock_quantity -= quantity;
+        item.stock_quantity -= qty;
 
         cartItems.push(item);
 
         const tr = $('<tr>').addClass(`cart-${item.id}`);
 
         tr.append(
-            $('<td>').text(quantity),
+            $('<td>').text(qty),
             $('<td>').text(item.product_name),
             $('<td>').text(`$${item.price}`),
-            $('<td>').text(`$${itemTotal.toFixed(2)}`),
+            $('<td>').text(`$${itemTotal.toFixed(2)}`)
         );
 
         $('#cart-items').append(tr);
-        $('.cart-total').text(`$${cartTotal.totalFixed(2)}`);
-    }
+        $('.cart-total').text(`$${cartTotal.toFixed(2)}`);
+    };
 
-    const warning = function (type, text) {
-        $('#popup')
-        .addClass(`alert alert-${type}`)
-        .text(text);
+    const message = function (type, text) {
+        $('#messages')
+            .addClass(`alert alert-${type}`)
+            .text(text);
 
-        timerInterval = setTimeout(clearPopup, 2000)
-    }
-    const clearPopup = function () {
-        $('#popup').empty().removeClass();
-    }
+        // shows message for set time
+        timerInterval = setTimeout(clearMessages, 5000);
+    };
+    // clear messages when items added to cart
+    const clearMessages = function () {
+        $('#messages').empty().removeClass();
+    };
 
-    const addItemCart = function () {
+    // id to variable and make api call
+    const addItemToCart = function () {
 
-        clearPopup();
+        clearMessages();
         const id = $(this).attr('data-id');
 
-        $.get(`/api/products/${id}`).then();
-    }
-
+        // running the update cart func
+        $.get(`/api/products/${id}`).then(updateCart);
+    };
     const updateCart = function (data) {
-        const numRequest = $(`#${data.id}`).val();
+        const numRequested = $(`#${data.id}`).val();
 
-        if ( numRequest > data.stock_quantity ) {
-            Message('danger', `Unfortunately, we only have ${data.stock_quantity} in stock at the moment.`)
+        // comparison to check quantity and if not enough then message
+        if (numRequested > data.stock_quantity) {
+            message('danger', `We're sorry. We only have ${data.stock_quantity} in stock`);
         } else {
-            addCartRow(numRequest, data);
-            message('success', 'Your items have been successfully added to your cart.');
+            addCartRow(numRequested, data);
+            message('success', 'Items successfully added to cart!');
             $(`#${data.id}`).val('');
+        }
+    };
+
+
+    const checkout = function () {
+        calculateTotal();
+
+        cartItems.forEach(function(item) {
+            $.ajax({
+                method: 'PUT',
+                url: `/api/products/${item.id}`,
+                data: item
+            });
+        });
+
+        const index = cartItems.length - 1;
+
+        updateItem(index);
+    };
+
+    function updateItem(i) {
+        if (i >= 0) {
+
+            $.ajax({
+                method: 'PUT',
+                url: `/api/products/${cartItems[i].id}`,
+                data: cartItems[i]
+            }).then(function (data) {
+                i--;
+                updateItem(i);
+            });
+        }else {
+            $('#shopping-cart').modal('show');
         }
     }
 
+    function calculateTotal() {
+        let total = 0;
+        cartItems.forEach(e => {
+            total += e.price;
+        });
+        $('.cart-total').text(total);
+    }
+    
     getItems();
 
-    $('#sale-items').on('click', '.add-to-cart', addItemCart);
-    $('#close').on('click', getItems);
+    $('#sale-items').on('click', '.add-to-cart', addItemToCart);
+    $('#cart').on('click', checkout);
+    $('#checkout').on('click', getItems);
 });
+

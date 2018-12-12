@@ -1,1 +1,2 @@
-# bamazon_hw
+# bamazon
+readme.md

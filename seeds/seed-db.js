@@ -1,78 +1,84 @@
-const db = require('../models');
+   const db = require('../models');
 
-const items = [
-    {
-        product_name: "Red Dead Redemption II",
-        department_name: "Video Games",
-        price: 59.99,
-        stock_quantity: 500
-    },
-    {
-        product_name: "Pistachios",
-        department_name: "Food",
-        price: 4.99,
-        stock_quantity: 29
-    },
-    {
-        product_name: "Really Awesome Tent",
-        department_name: "Sporting Goods",
-        price: 129.99,
-        stock_quantity: 59
-    },
-    {
-        product_name: "Just Cause 4",
-        department_name: "Video Games",
-        price: 59.99,
-        stock_quantity: 338
-    },
-    {
-        product_name: "Fake Lightsaber",
-        department_name: "Toys",
-        price: 32.00,
-        stock_quantity: 92
-    },
-    {
-        product_name: "Apple Homepod",
-        department_name: "Electronics",
-        price: 129.99,
-        stock_quantity: 78
-    },
-    {
-        product_name: "Raspberry Pi (Gen 3)",
-        department_name: "Electronics",
-        price: 62.00,
-        stock_quantity: 29
-    },
-    {
-        product_name: "1 Case of Berry Lacroix",
-        department_name: "Food",
-        price: 10.00,
-        stock_quantity: 500
-    },
-    {
-        product_name: "Awesome Millenium Falcon Shirt",
-        department_name: "Clothing",
-        price: 20.00,
-        stock_quantity: 19
-    },
-    {
-        product_name: "There Will Be Blood (DVD)",
-        department_name: "Movies",
-        price: 15.00,
-        stock_quantity: 31
-    },
-    {
-        product_name: "Shaun of the Dead (BluRay)",
-        department_name: "Movies",
-        price: 8.99,
-        stock_quantity: 3
-    },
-];
-
-db.sequelize.sync({ force:true }).then(function() {
-    db.Product.bulkCreate(items).then(function(rows) {
-        console.log('\n\nInserted\n\n');
-    }).catch(function(err) {
-        console.log('\n\nError:', err);
-    });
-});
+  const items = [{
+   
+       product_name: "Red Dead Redemption II (PS4)",
+       department_name: "Video Games",
+       price: 60.00,
+       stock_quantity: 102
+   },
+   {
+       product_name: "LaCie 1TB Hard Drive",
+       department_name: "Computer Equipment",
+       price: 51.50,
+       stock_quantity: 32
+   },
+   {
+       product_name: "Men's Basic White T-Shirt",
+       department_name: "Clothing",
+       price: 14.00,
+       stock_quantity: 72
+   },
+   {
+       product_name: "Shaun of The Dead Steelbook BluRay",
+       department_name: "Movies",
+       price: 24.99,
+       stock_quantity: 21
+   },
+   {
+       product_name: "Beats Headphones (Over Ear)",
+       department_name: "Music",
+       price: 149.99,
+       stock_quantity: 57
+   },
+   {
+       product_name: "Really Awesome Tent (Yeah, that's the real name)",
+       department_name: "Outdoor",
+       price: 267.99,
+       stock_quantity: 4
+   },
+   {
+       product_name: "LaCroix Berry (24-pack)",
+       department_name: "Food",
+       price: 12.00,
+       stock_quantity: 20
+   },
+   {
+       product_name: "Legend of Zelda: Breath of The Wild (Switch)",
+       department_name: "Video Games",
+       price: 59.99,
+       stock_quantity: 44
+   },
+   {
+       product_name: "Duracell Rechargable Battery Pack",
+       department_name: "Electronics",
+       price: 29.99,
+       stock_quantity: 120
+   },
+   {
+       product_name: "Apple iPad Pro (12-Inch)",
+       department_name: "Electronics",
+       price: 1100.00,
+       stock_quantity: 13
+   },
+   {
+       product_name: "Letterkenny Season 1 DVD",
+       department_name: "Movies",
+       price: 22.00,
+       stock_quantity: 9
+   },
+   {
+       product_name: "4 All Season Tires (265/75R16)",
+       department_name: "Automotive",
+       price: 419.99,
+       stock_quantity: 30
+   }
+   ];
+   
+   db.sequelize.sync({force: true}).then(function () {
+    db.Product.bulkCreate(items).then(function (data) {
+       db.sequelize.close();
+   }).catch(function (error) {
+       db.sequelize.close();
+   });
+   });
